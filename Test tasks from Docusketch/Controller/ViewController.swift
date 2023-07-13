@@ -9,9 +9,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    //MARK: - Proprties
+    //MARK: - Properties
     
     private let mainView = MainView()
+    
+    private lazy var rightButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(buttonAddIsPressed))
+        return button
+    }()
     
     //MARK: - Methods
     
@@ -23,8 +28,19 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         //view.backgroundColor = .yellow
         mainView.delegate = self
+        setupNavigationItem()
+    }
+    
+    @objc
+    func buttonAddIsPressed() {
+        let controller = СreateTaskController()
+        navigationController?.pushViewController(controller, animated: true)
     }
 
+    private func setupNavigationItem() {
+        title = "To-do List"
+        navigationItem.rightBarButtonItem = rightButton
+    }
 
 }
 

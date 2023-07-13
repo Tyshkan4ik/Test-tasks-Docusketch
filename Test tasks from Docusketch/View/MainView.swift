@@ -28,12 +28,15 @@ class MainView: UIView {
     
     
     
+    
+    
     //MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupElements()
         setupConstraints()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -55,5 +58,7 @@ class MainView: UIView {
             backgroundImage.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+    
+    
     
 }
