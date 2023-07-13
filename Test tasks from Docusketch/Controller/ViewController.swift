@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 class ViewController: UIViewController {
     
     //MARK: - Properties
@@ -18,6 +20,9 @@ class ViewController: UIViewController {
         return button
     }()
     
+    var array: [Task] = []
+    //[Task(title: "Чего какого", status: .planned), Task(title: "Купить хлеб", status: .completed)]
+    
     //MARK: - Methods
     
     override func loadView() {
@@ -26,9 +31,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.backgroundColor = .yellow
-        mainView.delegate = self
+        //mainView.delegate = self
         setupNavigationItem()
+        mainView.setupModelForCell(model: array)
     }
     
     @objc
@@ -46,7 +51,9 @@ class ViewController: UIViewController {
 
 //MARK: - Extensions - MainViewDelegate
 
-extension ViewController: MainViewDelegate {
+//extension ViewController: MainViewDelegate {
     
-}
+    
+    
+//}
 

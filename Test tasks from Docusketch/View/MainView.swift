@@ -7,16 +7,16 @@
 
 import UIKit
 
-protocol MainViewDelegate: AnyObject {
+//protocol MainViewDelegate: AnyObject {
     
-}
+//}
 
 /// view для main сцены
 class MainView: UIView {
     
     //MARK: - Proprties
     
-    weak var delegate: MainViewDelegate?
+    //weak var delegate: MainViewDelegate?
     
     private lazy var backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -26,7 +26,15 @@ class MainView: UIView {
         return imageView
     }()
     
+    private lazy var table: UITableView = {
+       let table = UITableView()
+        table.layer.cornerRadius = 10
+        table.alpha = 0.8
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
     
+    var modelTask: [Task] = []
     
     
     
@@ -36,7 +44,7 @@ class MainView: UIView {
         super.init(frame: frame)
         setupElements()
         setupConstraints()
-        
+        setupTable()
     }
     
     required init?(coder: NSCoder) {
@@ -48,6 +56,7 @@ class MainView: UIView {
     
     private func setupElements() {
         addSubview(backgroundImage)
+        addSubview(table)
     }
     
     private func setupConstraints() {
@@ -55,10 +64,45 @@ class MainView: UIView {
             backgroundImage.topAnchor.constraint(equalTo: topAnchor),
             backgroundImage.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundImage.trailingAnchor.constraint(equalTo: trailingAnchor),
-            backgroundImage.bottomAnchor.constraint(equalTo: bottomAnchor)
+            backgroundImage.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            table.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            table.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            table.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            table.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
+    private func setupTable() {
+        table.delegate = self
+        table.dataSource = self
+        table.register(CellForTable.self, forCellReuseIdentifier: CellForTable.identifier)
+    }
+}
+
+extension MainView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        modelTask.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellForTable.identifier, for: indexPath) as? CellForTable else {
+            return UITableViewCell()
+        }
+        cell.setup(model: modelTask[indexPath.row])
+        
+        
+        return cell
+    }
+    
+   func setupModelForCell(model: [Task]) {
+        modelTask = model
+    }
+    
+    
+}
+
+extension MainView: UITableViewDelegate {
     
 }
