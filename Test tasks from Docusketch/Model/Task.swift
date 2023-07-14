@@ -8,9 +8,7 @@
 import Foundation
 
 enum TaskStatus: Int {
-    //запланированная
     case planned
-    // завершенная
     case completed
 }
 

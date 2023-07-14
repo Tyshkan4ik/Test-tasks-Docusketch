@@ -7,9 +7,12 @@
 
 import UIKit
 
-
-
 class ViewController: UIViewController {
+    
+    /// Константы используемые в данном классе
+    private enum Constants {
+        static let title = "To-do List"
+    }
     
     //MARK: - Properties
     
@@ -20,7 +23,7 @@ class ViewController: UIViewController {
         return button
     }()
     
-    var array: [Task] = []
+    var arrayModelTask: [Task] = []
     
     //MARK: - Methods
     
@@ -32,10 +35,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         getTask()
         mainView.delegate = self
-        
         setupNavigationItem()
-        mainView.setupModelForCell(model: array)
-
+        mainView.setupModelForCell(model: arrayModelTask)
     }
     
     @objc
@@ -44,9 +45,9 @@ class ViewController: UIViewController {
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     private func setupNavigationItem() {
-        title = "To-do List"
+        title = Constants.title
         navigationItem.rightBarButtonItem = rightButton
     }
     
@@ -55,14 +56,15 @@ class ViewController: UIViewController {
         CoreDataManager.shared.getTask { [weak self] tasks in
             
             guard let self = self else { return }
-            self.array = tasks.map { Task(title: $0.title, status: $0.category, uuid: $0.uuid)
+            self.arrayModelTask = tasks.map { Task(title: $0.title, status: $0.category, uuid: $0.uuid)
             }
-            self.mainView.modelTask = self.array
+            self.mainView.modelTask = self.arrayModelTask
             self.mainView.table.reloadData()
         }
     }
+    
     func taskSorting() -> [Task] {
-    let sortedModel = array.sorted { task1, task2 in
+        let sortedModel = arrayModelTask.sorted { task1, task2 in
             task1.status.rawValue < task2.status.rawValue
         }
         return sortedModel
@@ -73,14 +75,15 @@ class ViewController: UIViewController {
 
 extension ViewController: СreateTaskControllerDelegate {
     
+    /// Обновляем таблицу после добавления новой задачи
     func reloadNew() {
         getTask()
     }
     
     func addNewTask(string: String?, uuid: UUID) {
         if let newTask = string, newTask != "" {
-            array.append(Task(title: newTask, status: .planned, uuid: uuid))
-            mainView.setupModelForCell(model: array)
+            arrayModelTask.append(Task(title: newTask, status: .planned, uuid: uuid))
+            mainView.setupModelForCell(model: arrayModelTask)
             mainView.table.reloadData()
         }
     }
@@ -90,32 +93,29 @@ extension ViewController: СreateTaskControllerDelegate {
 
 extension ViewController: MainViewDelegate {
     func taskNotImplemented(index: Int) {
-        if array[index].status == .completed {
-            array[index].status = .planned
-            array = taskSorting()
-            CoreDataManager.shared.change(taskId: array[index])
-            mainView.setupModelForCell(model: array)
+        if arrayModelTask[index].status == .completed {
+            arrayModelTask[index].status = .planned
+            arrayModelTask = taskSorting()
+            CoreDataManager.shared.change(taskId: arrayModelTask[index])
+            mainView.setupModelForCell(model: arrayModelTask)
             mainView.table.reloadData()
         }
     }
     
     func deleteTask(index: Int) {
-        CoreDataManager.shared.delete(taskId: (array[index]))
-        array.remove(at: index)
-        mainView.setupModelForCell(model: array)
+        CoreDataManager.shared.delete(taskId: (arrayModelTask[index]))
+        arrayModelTask.remove(at: index)
+        mainView.setupModelForCell(model: arrayModelTask)
         mainView.table.reloadData()
     }
     
     func taskCompleted(index: Int) {
-        if array[index].status != .completed {
-            array[index].status = .completed
-            array = taskSorting()
-            CoreDataManager.shared.change(taskId: array[index])
-            mainView.setupModelForCell(model: array)
+        if arrayModelTask[index].status != .completed {
+            arrayModelTask[index].status = .completed
+            arrayModelTask = taskSorting()
+            CoreDataManager.shared.change(taskId: arrayModelTask[index])
+            mainView.setupModelForCell(model: arrayModelTask)
             mainView.table.reloadData()
         }
     }
-    
-    
-    
 }

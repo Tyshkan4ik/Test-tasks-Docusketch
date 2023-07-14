@@ -10,12 +10,7 @@ import CoreData
 @objc(DBTask)
 
 class DBTask: NSManagedObject {
-    
-//    enum Status: Int {
-//        case planned
-//        case completed
-//    }
-    
+
     @NSManaged var categoryEnum: Int16
 
     var category: TaskStatus {
@@ -26,6 +21,7 @@ class DBTask: NSManagedObject {
             self.categoryEnum = Int16(newValue.rawValue)
         }
     }
+    
     @NSManaged var title: String
     @NSManaged var uuid: UUID
 }

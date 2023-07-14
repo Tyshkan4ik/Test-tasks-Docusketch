@@ -8,13 +8,24 @@
 import UIKit
 
 protocol MainViewDelegate: AnyObject {
+    /// Удалить задачу
     func deleteTask(index: Int)
+    /// Пометить задачу как выполненая
     func taskCompleted(index: Int)
+    ///  Пометить задачу как не выполненая
     func taskNotImplemented(index: Int)
 }
 
 /// view для main сцены
 class MainView: UIView {
+    
+    /// Константы используемые в данном классе
+    private enum Constants {
+        static let backgroundImage = "012"
+        static let cornerRadius: CGFloat = 10
+        static let alpha: CGFloat = 0.8
+        static let constraintConstant: CGFloat = 15
+    }
     
     //MARK: - Proprties
     
@@ -22,23 +33,21 @@ class MainView: UIView {
     
     private lazy var backgroundImage: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "012")
+        let image = UIImage(named: Constants.backgroundImage)
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     lazy var table: UITableView = {
-       let table = UITableView()
-        table.layer.cornerRadius = 10
-        table.alpha = 0.8
+        let table = UITableView()
+        table.layer.cornerRadius = Constants.cornerRadius
+        table.alpha = Constants.alpha
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     
     var modelTask: [Task] = []
-    
-    
     
     //MARK: - Initializers
     
@@ -52,7 +61,6 @@ class MainView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     //MARK: - Methods
     
@@ -69,8 +77,8 @@ class MainView: UIView {
             backgroundImage.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             table.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            table.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-            table.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            table.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.constraintConstant),
+            table.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.constraintConstant),
             table.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -82,28 +90,27 @@ class MainView: UIView {
     }
 }
 
+//MARK: - Extension - UITableViewDataSource
+
 extension MainView: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         modelTask.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CellForTable.identifier, for: indexPath) as? CellForTable else {
             return UITableViewCell()
         }
         cell.setup(model: modelTask[indexPath.row])
-        
-        
         return cell
     }
-    
-   func setupModelForCell(model: [Task]) {
-       modelTask = model
+    func setupModelForCell(model: [Task]) {
+        modelTask = model
     }
-    
-    
 }
+
+//MARK: - Extension - UITableViewDelegate
 
 extension MainView: UITableViewDelegate {
     
@@ -111,11 +118,10 @@ extension MainView: UITableViewDelegate {
         delegate?.taskCompleted(index: indexPath.row)
     }
     
-    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, _ in
             self?.delegate?.deleteTask(index: indexPath.row)
-            }
+        }
         actionDelete.image = UIImage(systemName: "trash")
         let actions = UISwipeActionsConfiguration(actions: [actionDelete])
         return actions
@@ -128,7 +134,4 @@ extension MainView: UITableViewDelegate {
         let actions = UISwipeActionsConfiguration(actions: [actionSwipeInstance])
         return actions
     }
-    
-    
-    
 }

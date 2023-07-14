@@ -73,7 +73,6 @@ final class CoreDataManager {
         }
     }
     
-    
     ///Метод удаление из БД
     func delete(taskId: Task) {
         do {

@@ -14,6 +14,14 @@ protocol СreateTaskControllerDelegate: AnyObject {
 
 class СreateTaskController: UIViewController {
     
+    /// Константы используемые в данном классе
+    private enum Constants {
+        static let placeholder = "Enter a new task"
+        static let title = "Create a task"
+        static let leadingTrailingConstraint: CGFloat = 20
+        static let topConstraint: CGFloat = 30
+    }
+    
     //MARK: - Properties
     
     weak var delegate: СreateTaskControllerDelegate?
@@ -26,7 +34,7 @@ class СreateTaskController: UIViewController {
     private let textField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.placeholder = "Enter a new task"
+        textField.placeholder = Constants.placeholder
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -39,24 +47,28 @@ class СreateTaskController: UIViewController {
         setupNavigationItem()
         setupElements()
         setupConstraints()
-        
+        gestureRecognizer()
+    }
+    
+    /// Распознаватель жестов (для сварачивания клавиатуры по tap)
+    private func gestureRecognizer() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapAround))
         view.addGestureRecognizer(tap)
     }
+    
     @objc
     private func tapAround() {
         view.endEditing(true)
     }
     
     private func setupNavigationItem() {
-        title = "Create a task"
+        title = Constants.title
         navigationItem.rightBarButtonItem = rightButton
     }
     
     @objc
     func buttonSaveIsPressed() {
-        //delegate?.addNewTask(string: textField.text)
-        CoreDataManager.shared.save(task: Task(title: textField.text ?? "ошибка", status: TaskStatus.planned, uuid: UUID()))
+        CoreDataManager.shared.save(task: Task(title: textField.text ?? "", status: TaskStatus.planned, uuid: UUID()))
         delegate?.reloadNew()
         navigationController?.popViewController(animated: true)
     }
@@ -67,10 +79,9 @@ class СreateTaskController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30)
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingTrailingConstraint),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.leadingTrailingConstraint),
+            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.topConstraint)
         ])
     }
-    
 }
