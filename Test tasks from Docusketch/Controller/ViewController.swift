@@ -31,14 +31,17 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //mainView.delegate = self
         setupNavigationItem()
         mainView.setupModelForCell(model: array)
+        
     }
     
     @objc
     func buttonAddIsPressed() {
         let controller = СreateTaskController()
+        controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -51,9 +54,17 @@ class ViewController: UIViewController {
 
 //MARK: - Extensions - MainViewDelegate
 
-//extension ViewController: MainViewDelegate {
+extension ViewController: СreateTaskControllerDelegate {
+    func addNewTask(string: String?) {
+        if let newTask = string, newTask != "" {
+            array.append(Task(title: newTask, status: .planned))
+            mainView.setupModelForCell(model: array)
+            mainView.table.reloadData()
+        }
+    }
     
     
     
-//}
+    
+}
 

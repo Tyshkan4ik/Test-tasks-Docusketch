@@ -26,7 +26,7 @@ class MainView: UIView {
         return imageView
     }()
     
-    private lazy var table: UITableView = {
+    lazy var table: UITableView = {
        let table = UITableView()
         table.layer.cornerRadius = 10
         table.alpha = 0.8
