@@ -40,8 +40,13 @@ class СreateTaskController: UIViewController {
         setupElements()
         setupConstraints()
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapAround))
+        view.addGestureRecognizer(tap)
     }
-    
+    @objc
+    private func tapAround() {
+        view.endEditing(true)
+    }
     
     private func setupNavigationItem() {
         title = "Create a task"
