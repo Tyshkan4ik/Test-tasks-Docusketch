@@ -107,6 +107,7 @@ extension MainView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         modelTask[indexPath.row].status = .completed
+        modelTask = taskSorting()
         table.reloadData()
     }
     
@@ -124,11 +125,19 @@ extension MainView: UITableViewDelegate {
         let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not implemented") { [weak self] _,_,_ in
             if self?.modelTask[indexPath.row].status == .completed {
                 self?.modelTask[indexPath.row].status = .planned
+                self?.modelTask = self!.taskSorting()
                 tableView.reloadData()
             }
         }
         let actions = UISwipeActionsConfiguration(actions: [actionSwipeInstance])
         return actions
+    }
+    
+    func taskSorting() -> [Task] {
+    let sortedModel = modelTask.sorted { task1, task2 in
+            task1.status.rawValue < task2.status.rawValue
+        }
+        return sortedModel
     }
     
 }
