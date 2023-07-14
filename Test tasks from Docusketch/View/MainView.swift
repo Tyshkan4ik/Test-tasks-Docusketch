@@ -113,12 +113,22 @@ extension MainView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, _ in
             self?.modelTask.remove(at: indexPath.row)
-            self?.table.reloadData()
+            tableView.reloadData()
             }
         actionDelete.image = UIImage(systemName: "trash")
         let actions = UISwipeActionsConfiguration(actions: [actionDelete])
-        
-        
         return actions
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not implemented") { [weak self] _,_,_ in
+            if self?.modelTask[indexPath.row].status == .completed {
+                self?.modelTask[indexPath.row].status = .planned
+                tableView.reloadData()
+            }
+        }
+        let actions = UISwipeActionsConfiguration(actions: [actionSwipeInstance])
+        return actions
+    }
+    
 }
