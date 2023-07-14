@@ -9,6 +9,8 @@ import UIKit
 
 protocol MainViewDelegate: AnyObject {
     func deleteTask(index: Int)
+    func taskCompleted(index: Int)
+    func taskNotImplemented(index: Int)
 }
 
 /// view для main сцены
@@ -106,15 +108,13 @@ extension MainView: UITableViewDataSource {
 extension MainView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        modelTask[indexPath.row].status = .completed
-        modelTask = taskSorting()
-        table.reloadData()
+        delegate?.taskCompleted(index: indexPath.row)
     }
+    
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, _ in
-            self?.modelTask.remove(at: indexPath.row)
-            tableView.reloadData()
+            self?.delegate?.deleteTask(index: indexPath.row)
             }
         actionDelete.image = UIImage(systemName: "trash")
         let actions = UISwipeActionsConfiguration(actions: [actionDelete])
@@ -123,21 +123,12 @@ extension MainView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not implemented") { [weak self] _,_,_ in
-            if self?.modelTask[indexPath.row].status == .completed {
-                self?.modelTask[indexPath.row].status = .planned
-                self?.modelTask = self!.taskSorting()
-                tableView.reloadData()
-            }
+            self?.delegate?.taskNotImplemented(index: indexPath.row)
         }
         let actions = UISwipeActionsConfiguration(actions: [actionSwipeInstance])
         return actions
     }
     
-    func taskSorting() -> [Task] {
-    let sortedModel = modelTask.sorted { task1, task2 in
-            task1.status.rawValue < task2.status.rawValue
-        }
-        return sortedModel
-    }
+    
     
 }

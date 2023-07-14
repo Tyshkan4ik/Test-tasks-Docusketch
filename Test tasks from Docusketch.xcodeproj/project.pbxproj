@@ -10,13 +10,15 @@
 		81453B322A60278A001E16CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B312A60278A001E16CB /* AppDelegate.swift */; };
 		81453B342A60278A001E16CB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B332A60278A001E16CB /* SceneDelegate.swift */; };
 		81453B362A60278A001E16CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B352A60278A001E16CB /* ViewController.swift */; };
-		81453B3C2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 81453B3A2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodeld */; };
+		81453B3C2A60278A001E16CB /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 81453B3A2A60278A001E16CB /* CoreData.xcdatamodeld */; };
 		81453B3E2A60278B001E16CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81453B3D2A60278B001E16CB /* Assets.xcassets */; };
 		81453B412A60278B001E16CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81453B3F2A60278B001E16CB /* LaunchScreen.storyboard */; };
 		81453B4C2A60329A001E16CB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B4B2A60329A001E16CB /* MainView.swift */; };
 		81453B4E2A605051001E16CB /* СreateTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B4D2A605051001E16CB /* СreateTaskController.swift */; };
 		81453B502A605B0D001E16CB /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B4F2A605B0D001E16CB /* Task.swift */; };
 		81453B522A60600C001E16CB /* CellForTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B512A60600C001E16CB /* CellForTable.swift */; };
+		81453B552A614BA6001E16CB /* DBTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B542A614BA6001E16CB /* DBTask.swift */; };
+		81453B572A615307001E16CB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453B562A615307001E16CB /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		81453B4D2A605051001E16CB /* СreateTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СreateTaskController.swift"; sourceTree = "<group>"; };
 		81453B4F2A605B0D001E16CB /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		81453B512A60600C001E16CB /* CellForTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellForTable.swift; sourceTree = "<group>"; };
+		81453B542A614BA6001E16CB /* DBTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTask.swift; sourceTree = "<group>"; };
+		81453B562A615307001E16CB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,10 +73,10 @@
 				81453B492A603253001E16CB /* Model */,
 				81453B482A603249001E16CB /* View */,
 				81453B4A2A603266001E16CB /* Controller */,
+				81453B532A6143DD001E16CB /* Core Data */,
 				81453B3D2A60278B001E16CB /* Assets.xcassets */,
 				81453B3F2A60278B001E16CB /* LaunchScreen.storyboard */,
 				81453B422A60278B001E16CB /* Info.plist */,
-				81453B3A2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodeld */,
 			);
 			path = "Test tasks from Docusketch";
 			sourceTree = "<group>";
@@ -101,6 +105,16 @@
 				81453B4D2A605051001E16CB /* СreateTaskController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		81453B532A6143DD001E16CB /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				81453B3A2A60278A001E16CB /* CoreData.xcdatamodeld */,
+				81453B542A614BA6001E16CB /* DBTask.swift */,
+				81453B562A615307001E16CB /* CoreDataManager.swift */,
+			);
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,10 +191,12 @@
 				81453B362A60278A001E16CB /* ViewController.swift in Sources */,
 				81453B322A60278A001E16CB /* AppDelegate.swift in Sources */,
 				81453B342A60278A001E16CB /* SceneDelegate.swift in Sources */,
+				81453B552A614BA6001E16CB /* DBTask.swift in Sources */,
 				81453B522A60600C001E16CB /* CellForTable.swift in Sources */,
 				81453B4C2A60329A001E16CB /* MainView.swift in Sources */,
 				81453B502A605B0D001E16CB /* Task.swift in Sources */,
-				81453B3C2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodeld in Sources */,
+				81453B572A615307001E16CB /* CoreDataManager.swift in Sources */,
+				81453B3C2A60278A001E16CB /* CoreData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,13 +404,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		81453B3A2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodeld */ = {
+		81453B3A2A60278A001E16CB /* CoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				81453B3B2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodel */,
 			);
 			currentVersion = 81453B3B2A60278A001E16CB /* Test_tasks_from_Docusketch.xcdatamodel */;
-			path = Test_tasks_from_Docusketch.xcdatamodeld;
+			path = CoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

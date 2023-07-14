@@ -22,4 +22,5 @@ protocol TaskProtocol {
 struct Task: TaskProtocol {
     var title: String
     var status: TaskStatus
+    var uuid: UUID
 }

@@ -8,7 +8,8 @@
 import UIKit
 
 protocol СreateTaskControllerDelegate: AnyObject {
-    func addNewTask(string: String?)
+    func addNewTask(string: String?, uuid: UUID)
+    func reloadNew()
 }
 
 class СreateTaskController: UIViewController {
@@ -41,6 +42,7 @@ class СreateTaskController: UIViewController {
         
     }
     
+    
     private func setupNavigationItem() {
         title = "Create a task"
         navigationItem.rightBarButtonItem = rightButton
@@ -48,7 +50,9 @@ class СreateTaskController: UIViewController {
     
     @objc
     func buttonSaveIsPressed() {
-        delegate?.addNewTask(string: textField.text)
+        //delegate?.addNewTask(string: textField.text)
+        CoreDataManager.shared.save(task: Task(title: textField.text ?? "ошибка", status: TaskStatus.planned, uuid: UUID()))
+        delegate?.reloadNew()
         navigationController?.popViewController(animated: true)
     }
     
