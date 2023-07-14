@@ -35,6 +35,7 @@ class CellForTable: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
         setupConstraints()
+        selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {

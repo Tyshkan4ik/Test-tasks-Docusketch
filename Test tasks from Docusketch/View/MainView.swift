@@ -7,16 +7,16 @@
 
 import UIKit
 
-//protocol MainViewDelegate: AnyObject {
-    
-//}
+protocol MainViewDelegate: AnyObject {
+    func deleteTask(index: Int)
+}
 
 /// view для main сцены
 class MainView: UIView {
     
     //MARK: - Proprties
     
-    //weak var delegate: MainViewDelegate?
+    weak var delegate: MainViewDelegate?
     
     private lazy var backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -97,7 +97,7 @@ extension MainView: UITableViewDataSource {
     }
     
    func setupModelForCell(model: [Task]) {
-        modelTask = model
+       modelTask = model
     }
     
     
@@ -105,4 +105,20 @@ extension MainView: UITableViewDataSource {
 
 extension MainView: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        modelTask[indexPath.row].status = .completed
+        table.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actionDelete = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, _ in
+            self?.modelTask.remove(at: indexPath.row)
+            self?.table.reloadData()
+            }
+        actionDelete.image = UIImage(systemName: "trash")
+        let actions = UISwipeActionsConfiguration(actions: [actionDelete])
+        
+        
+        return actions
+    }
 }
